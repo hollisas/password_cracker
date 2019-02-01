@@ -1,0 +1,4 @@
+homer:7e11ed17256ef7ee697ece97d8edc25c558108aa18583de639c96ba2769bd0c3:20:Homer Simpson:/home/homer:/bin/tcsh
+marge:3564c21155d772de5cb58ba122d2131f1c060bdf081730ea9518a45bd966c2e4:351:Marge Simpson:/home/marge:/bin/tcsh
+lisa:e77599c90db264dbe4b449565a03b5a26c989e975089fcc7dc3c55a720928e66:353:Lisa Simpson:/home/lisa:/bin/tcsh
+Maggie:ab2620f9b7154d9f9dc1b3c2d
