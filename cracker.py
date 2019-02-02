@@ -92,6 +92,7 @@ def getCracked(username, hashedPassword):
     currHashedPassword = hashedPassword
     print("The user is: " + currUser + " Their Password is: " + currHashedPassword + "\n")
     rule1(currUser, currHashedPassword)
+    rule4(currUser, currHashedPassword)
     ## Remove later used for testing the parsing of the file
     ## and formatting everything to required formats
     exit()
@@ -167,14 +168,14 @@ def rule1(user, hashedPass):
                 hashed = m.hexdigest()
 
                 ## Test the hashed word for visual confirmation
-                print(hashed)
+                #print(hashed)
 
                 ## If the hashed password matches the string
                 ## that was recovered from the user entered file
                 ## then the password has been found.
                 if(hashed == hashedPass):
                     ##Testing statements Remove later##
-                    print("Password Should be: Atari/'s2\n")
+                    #print("Password Should be: Atari/'s2\n")
                     #print("Hashes equal each other")
                     print("Password is ", newWord)
 
@@ -190,5 +191,33 @@ def rule1(user, hashedPass):
                 ## Reset the word back to original
                 ## word without digits appended to it
                 newWord = words[i].capitalize()
+
+
+def rule4(user, hashedPass):
+    ## Read in txt file that was created and submitted
+    ## Store them into guesses then close the file
+    f = open("6digits.txt", "r")
+    guesses = f.read().split("\n")
+    f.close()
+
+    password = hashedPass
+
+    ## begin the hashlib 256 function
+    #m = hashlib.sha256()
+
+    ## iterate through every line in the array
+    for guess in guesses:
+        m = hashlib.sha256()
+
+        encodedGuess = guess.encode('utf-8')
+        m.update(encodedGuess)
+
+        hashedGuess = m.hexdigest()
+
+        if(password == hashedGuess):
+            print("Cracked the password.")
+            print("User: ", user, "\nPassword is: ", guess)
+            exit()
+
 
 main()

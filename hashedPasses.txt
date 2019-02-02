@@ -1,3 +1,6 @@
-homer:7e11ed17256ef7ee697ece97d8edc25c558108aa18583de639c96ba2769bd0c3:20:Homer Simpson:/home/homer:/bin/tcsh
-marge:3564c21155d772de5cb58ba122d2131f1c060bdf081730ea9518a45bd966c2e4:351:Marge Simpson:/home/marge:/bin/tcsh
-lisa:e77599c90db264dbe4b449565a03b5a26c989e975089fcc7dc3c55a720928e66:353:Lisa Simpson:/home/lisa:/bin/tcsh
+homer:f737803cdefd360ebd5115b9389ea825afe2c057e7714be9373835b57ad78fe0:20:Homer Simpson:/home/homer:/bin/tcsh
+marge:fb6ed91111a96ce267d60826f7d766a59cce7a6020122d92a9ca529458075c90:351:Marge Simpson:/home/marge:/bin/tcsh
+lisa:8b3a1db4a1616730f04a98076be4d53c82e260578317f4ce2a60f02a5bb2f1ef:353:Lisa Simpson:/home/lisa:/bin/tcsh
+bob:a9ec0e5f63808cddab29f8d5fe08917dc6b49778bf292b6185ccc376ed922967:353:Bob Simpson:/home/bob:/bin/tcsh
+jack:da761b64315be2758f4fec1f15a186e611161049685d14ae74752790364f088e:353:Jack Simpson:/home/jack:/bin/tcsh
+tom:44da7af69014df5a97f4bbbf45e7ec4914a7670d85f84405a090bb40ab5445de:353:Tom Simpson:/home/tom:/bin/tcsh
