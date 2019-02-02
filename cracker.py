@@ -91,14 +91,7 @@ def getCracked(username, hashedPassword):
     currUser = username
     currHashedPassword = hashedPassword
     print("The user is: " + currUser + " Their Password is: " + currHashedPassword + "\n")
-    #print("Reading in text file /usr/share/dict/words...")
-    f = open("/usr/share/dict/words", "r")
-    ## Read the file and split on space
-    words = f.read().split()
-    ## Close the file
-    f.close()
-    #print("Finished reading in text file /usr/share/dict/words...")
-
+    rule1(currUser, currHashedPassword)
     ## Remove later used for testing the parsing of the file
     ## and formatting everything to required formats
     exit()
@@ -121,6 +114,14 @@ def getCracked(username, hashedPassword):
 
 
 ## decide how the threads will guess which rule to use
+def rule1(user, hashedPass):
+    #print("Reading in text file /usr/share/dict/words...")
+    f = open("/usr/share/dict/words", "r")
+    ## Read the file and split on space
+    words = f.read().split()
+    ## Close the file
+    f.close()
+    #print("Finished reading in text file /usr/share/dict/words...")
     for i in range(len(words) - 1):
 
     ## Testing for one iteration Remove later
@@ -171,7 +172,7 @@ def getCracked(username, hashedPassword):
                 ## If the hashed password matches the string
                 ## that was recovered from the user entered file
                 ## then the password has been found.
-                if(hashed == string):
+                if(hashed == hashedPass):
                     ##Testing statements Remove later##
                     print("Password Should be: Atari/'s2\n")
                     #print("Hashes equal each other")
