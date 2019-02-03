@@ -150,6 +150,13 @@ def rule1(user, password, threadNum):
                 ## word without digits appended to it
                 newWord = words[i].capitalize()
 
+##################################################
+## Rule 2:                                      ##
+## 10 digit password with at least one of the   ##
+## following special characters in the          ##
+## beginning: '*', '~', '!', '#'                ##
+##################################################
+
 def rule2(user, password, threadNum):
     ## Read in txt file that was created and submitted
     ## Store them into guesses then close the file
