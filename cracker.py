@@ -45,7 +45,8 @@ def main():
     ## after finding the hashed password.
     userArr = []
     hashedPassArr = []
-    ## Create separate arrays for Users and Hashed Passwords to be passed into threading function
+    ## Create separate arrays for Users and Hashed Passwords 
+    ## to be passed into threading function
     for line in hashedLines:
         seq = line.split(":")
         user , hashedPass , rest = seq[0],seq[1], seq[2:]
@@ -80,21 +81,6 @@ def getCracked(username, hashedPassword, threadNumber):
     ## and formatting everything to required formats
     exit()
 
-    #m = hashlib.sha256()
-    #print(list(words[102400]))
-
-
-############# TO DO ###############
-## Create enough threads for all the passwords/rules
-## Need to figure out how to stop running application
-## Once password has been found
-## Potentially exit() to stop thread from continuing
-
-## May want to look into creating a rainbow table with 
-## the rules for the numbers as well.
-## Thread will need to have the string stored before 
-## further testing can take place
-##################################
 
 ##################################################
 ## Rule 1:                                      ##
@@ -164,6 +150,41 @@ def rule1(user, password, threadNum):
                 ## word without digits appended to it
                 newWord = words[i].capitalize()
 
+def rule2(user, password, threadNum):
+    ## Read in txt file that was created and submitted
+    ## Store them into guesses then close the file
+    f = open("rule2passwords.txt", "r")
+    guesses = f.read().split("\n")
+    f.close()
+    print("Thread " , threadNum , " trying rule 3...\n")
+
+    ## Iterate through every line in the array
+    for guess in guesses:
+        ## Begin the hashlib 256 function
+        m = hashlib.sha256()
+        
+        ## Encode the guess into 'utf-8'
+        ## update it into m
+        ## Hash the guess
+        encodedGuess = guess.encode('utf-8')
+        m.update(encodedGuess)
+        hashedGuess = m.hexdigest()
+
+        ## If the password hash in the file
+        ## equals the hashed guess found a
+        ## a match
+        if(password == hashedGuess):
+            print("\nThread", threadNum , "cracked password successfully")
+            print("User: ", user, "\nPassword is: ", guess)
+            exit()
+
+##################################################
+## Rule 3:                                      ##
+## 5 character word from /usr/share/dict/words  ##
+## with the letter 'a' in it which gets replaced## 
+## with any special character @ and the         ##
+## character 'l' is substituted by the number 1 ## 
+##################################################
 def rule3(user, password, threadNum):
     
     ## Read in txt file that was created and submitted
@@ -172,6 +193,7 @@ def rule3(user, password, threadNum):
     guesses = f.read().split("\n")
     f.close()
     print("Thread " , threadNum , " trying rule 3...\n")
+
     ## Iterate through every line in the array
     for guess in guesses:
         ## Begin the hashlib 256 function
@@ -265,5 +287,4 @@ def rule5(user, password, threadNum):
                 exit()
 
             
-
 main()
