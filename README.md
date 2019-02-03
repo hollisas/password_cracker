@@ -16,6 +16,8 @@ IMPORTANT NOTES
 
 6) The main dictionary that the cracker.py uses is /usr/share/dict/words and must be in that path for the script to work.
 
+7) After running the script you can view the cracked passwords in the file "crackedPasswordsList.txt"
+
 Running The Script
 
 1) CD into the directory that contains cracker.py
