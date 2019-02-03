@@ -70,6 +70,7 @@ def getCracked(username, hashedPassword, threadNumber):
     print("beginning cracking in thread " , currThreadNum , " ...\n")
     currUser = username
     currHashedPassword = hashedPassword
+    #test
     print("The user is: " + currUser + " Their Password is: " + currHashedPassword + "\n")
     rule1(currUser, currHashedPassword, currThreadNum)
     rule3(currUser, currHashedPassword, currThreadNum)
