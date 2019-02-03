@@ -32,10 +32,7 @@ def main():
     ## Split the file into lines denoted by new line characters
     hashedLines = hashedFile.read().split("\n")
 
-    ## Printing for accuracy
-    for line in hashedLines:
-        #print(line)
-        a =0 #deletelater
+
     print("Finished reading in ", textFile)
     ## Close the file
     hashedFile.close()
@@ -73,10 +70,13 @@ def getCracked(username, hashedPassword, threadNumber):
     print("beginning cracking in thread " , currThreadNum , " ...\n")
     currUser = username
     currHashedPassword = hashedPassword
+    #test
     print("The user is: " + currUser + " Their Password is: " + currHashedPassword + "\n")
     rule1(currUser, currHashedPassword, currThreadNum)
     rule3(currUser, currHashedPassword, currThreadNum)
     rule4(currUser, currHashedPassword, currThreadNum)
+    rule5(currUser, currHashedPassword, currThreadNum)
+    rule2(currUser, currHashedPassword, currThreadNum)
     ## Remove later used for testing the parsing of the file
     ## and formatting everything to required formats
     exit()
@@ -140,7 +140,7 @@ def rule1(user, password, threadNum):
                 if(hashedWord == password):
                     ##### Write to file??? ####
                     print("Thread", threadNum , "cracked password successfully\n")
-                    print("User: ", user, "\nPassword is: ", encodedWord)
+                    print("User: ", user, "\nPassword is: ", newWord)
 
                     ## Close the thread after outputting the
                     ## results to a file in the correct format
@@ -162,7 +162,7 @@ def rule2(user, password, threadNum):
     f = open("rule2passwords.txt", "r")
     guesses = f.read().split("\n")
     f.close()
-    print("Thread " , threadNum , " trying rule 3...\n")
+    print("Thread " , threadNum , " trying rule 2...\n")
 
     ## Iterate through every line in the array
     for guess in guesses:
@@ -172,7 +172,7 @@ def rule2(user, password, threadNum):
         ## Encode the guess into 'utf-8'
         ## update it into m
         ## Hash the guess
-        encodedGuess = guess.encode('utf-8')
+        encodedGuess = guess.encode('ascii')
         m.update(encodedGuess)
         hashedGuess = m.hexdigest()
 
@@ -289,7 +289,7 @@ def rule5(user, password, threadNum):
             ## If they match it is the password
             if(password == hashedWord):
                 print("Thread", threadNum , "cracked password successfully")
-                print("User: ", user, "\nPassword is: ", guess)
+                print("User: ", user, "\nPassword is: ", word)
                 exit()
 
             
