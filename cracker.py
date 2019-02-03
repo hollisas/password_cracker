@@ -156,7 +156,6 @@ def rule1(user, password, threadNum):
 ## following special characters in the          ##
 ## beginning: '*', '~', '!', '#'                ##
 ##################################################
-
 def rule2(user, password, threadNum):
     ## Read in txt file that was created and submitted
     ## Store them into guesses then close the file
