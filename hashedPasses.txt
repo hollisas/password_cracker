@@ -4,3 +4,4 @@ lisa:8b3a1db4a1616730f04a98076be4d53c82e260578317f4ce2a60f02a5bb2f1ef:353:Lisa S
 bob:a9ec0e5f63808cddab29f8d5fe08917dc6b49778bf292b6185ccc376ed922967:353:Bob Simpson:/home/bob:/bin/tcsh
 jack:da761b64315be2758f4fec1f15a186e611161049685d14ae74752790364f088e:353:Jack Simpson:/home/jack:/bin/tcsh
 tom:44da7af69014df5a97f4bbbf45e7ec4914a7670d85f84405a090bb40ab5445de:353:Tom Simpson:/home/tom:/bin/tcsh
+dave:54dc7fda9bc21ddf24ef550804a9200c1808e8f392409855d9d1aac63dbb2aef:353:Dave Simpson:/home/tom:/bin/tcsh
