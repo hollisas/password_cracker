@@ -56,7 +56,7 @@ def main():
     threads = []
     i = 0
     for i in range(len(userArr)):
-        t = threading.Thread(target = getCracked, args = (userArr[i], hashedPassArr[i]))
+        t = threading.Thread(target = getCracked, args = (userArr[i], hashedPassArr[i], i))
         threads.append(t)
         t.start()
     #getCracked(userArr[0], hashedPassArr[0])
@@ -66,13 +66,16 @@ def main():
 
 
 #function to run all rules (passed into each thread)
-def getCracked(username, hashedPassword):
+def getCracked(username, hashedPassword, threadNumber):
     ## Open the text file for the wordlist
+    currThreadNum = threadNumber
+    print("beginning cracking in thread " , currThreadNum , " ...\n")
     currUser = username
     currHashedPassword = hashedPassword
     print("The user is: " + currUser + " Their Password is: " + currHashedPassword + "\n")
-    rule1(currUser, currHashedPassword)
-    rule4(currUser, currHashedPassword)
+    rule1(currUser, currHashedPassword, currThreadNum)
+    rule3(currUser, currHashedPassword, currThreadNum)
+    rule4(currUser, currHashedPassword, currThreadNum)
     ## Remove later used for testing the parsing of the file
     ## and formatting everything to required formats
     exit()
@@ -99,8 +102,8 @@ def getCracked(username, hashedPassword):
 ## gets the 1st letter capitalized & a 1-digit  ##
 ## number appended                              ##
 ##################################################
-def rule1(user, password):
-    print("Reading in text file /usr/share/dict/words...")
+def rule1(user, password, threadNum):
+    print("Reading in text file /usr/share/dict/words...\n")
     
     ## Read in the dictionary of words
     ## Read the file and split on space & store into words
@@ -109,8 +112,8 @@ def rule1(user, password):
     words = f.read().split()
     f.close()
 
-    print("Finished reading in text file /usr/share/dict/words...")
-    
+    print("Finished reading in text file /usr/share/dict/words...\n")
+    print("Thread " , threadNum ," trying rule 1...\n")
     ## Iterate through the entire list
     for i in range(len(words) - 1):
         ## Reset the hash for every new word tested
@@ -150,7 +153,8 @@ def rule1(user, password):
                 ## then the password has been found.
                 if(hashedWord == password):
                     ##### Write to file??? ####
-                    print("Password is ", newWord)
+                    print("Thread", threadNum , "cracked password successfully\n")
+                    print("User: ", user, "\nPassword is: ", encodedWord)
 
                     ## Close the thread after outputting the
                     ## results to a file in the correct format
@@ -160,18 +164,14 @@ def rule1(user, password):
                 ## word without digits appended to it
                 newWord = words[i].capitalize()
 
-##################################################
-## Rule 4:                                      ##
-## Any number that is made with digits up to    ##
-## 10 digits length                             ##
-##################################################
-def rule4(user, password):
+def rule3(user, password, threadNum):
+    
     ## Read in txt file that was created and submitted
     ## Store them into guesses then close the file
-    f = open("6digits.txt", "r")
+    f = open("5charsReplaced.txt", "r")
     guesses = f.read().split("\n")
     f.close()
-
+    print("Thread " , threadNum , " trying rule 3...\n")
     ## Iterate through every line in the array
     for guess in guesses:
         ## Begin the hashlib 256 function
@@ -188,7 +188,40 @@ def rule4(user, password):
         ## equals the hashed guess found a
         ## a match
         if(password == hashedGuess):
-            print("Cracked the password.")
+            print("\nThread", threadNum , "cracked password successfully")
+            print("User: ", user, "\nPassword is: ", guess)
+            exit()
+
+
+##################################################
+## Rule 4:                                      ##
+## Any number that is made with digits up to    ##
+## 10 digits length                             ##
+##################################################
+def rule4(user, password, threadNum):
+    ## Read in txt file that was created and submitted
+    ## Store them into guesses then close the file
+    f = open("6digits.txt", "r")
+    guesses = f.read().split("\n")
+    f.close()
+    print("Thread " , threadNum , " trying rule 4...\n")
+    ## Iterate through every line in the array
+    for guess in guesses:
+        ## Begin the hashlib 256 function
+        m = hashlib.sha256()
+        
+        ## Encode the guess into 'utf-8'
+        ## update it into m
+        ## Hash the guess
+        encodedGuess = guess.encode('utf-8')
+        m.update(encodedGuess)
+        hashedGuess = m.hexdigest()
+
+        ## If the password hash in the file
+        ## equals the hashed guess found a
+        ## a match
+        if(password == hashedGuess):
+            print("\nThread", threadNum , "cracked password successfully")
             print("User: ", user, "\nPassword is: ", guess)
             exit()
 
@@ -198,7 +231,7 @@ def rule4(user, password):
 ## Any number of characters single word from    ##
 ## /usr/share/dict/words                        ##
 ##################################################
-def rule5(user, password):
+def rule5(user, password, threadNum):
     print("Reading in text file /usr/share/dict/words...")
     
     ## Read in the dictionary of words file
@@ -207,7 +240,7 @@ def rule5(user, password):
     f = open("/usr/share/dict/words", "r")
     words = f.read().split("\n")
     f.close()
-
+    print("Thread " , threadNum , " trying rule 5...\n")
     ## Iterate through all the words in the file
     for word in words:
         
@@ -227,8 +260,8 @@ def rule5(user, password):
             ## Compare hashedWord with hash in file
             ## If they match it is the password
             if(password == hashedWord):
-                print("Found password.")
-                print("User: ", user, "\nPassword: ", word)
+                print("Thread", threadNum , "cracked password successfully")
+                print("User: ", user, "\nPassword is: ", guess)
                 exit()
 
             
