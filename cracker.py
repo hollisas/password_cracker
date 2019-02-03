@@ -113,31 +113,40 @@ def getCracked(username, hashedPassword):
 ## further testing can take place
 ##################################
 
-
-## decide how the threads will guess which rule to use
+##################################################
+## Rule 1:                                      ##
+## 7 character word from /usr/share/dict/words  ##
+## gets the 1st letter capitalized & a 1-digit  ##
+## number appended                              ##
+##################################################
 def rule1(user, hashedPass):
-    #print("Reading in text file /usr/share/dict/words...")
-    f = open("/usr/share/dict/words", "r")
-    ## Read the file and split on space
-    words = f.read().split()
+    print("Reading in text file /usr/share/dict/words...")
+    
+    ## Read in the dictionary of words
+    ## Read the file and split on space & store into words
     ## Close the file
+    f = open("/usr/share/dict/words", "r")
+    words = f.read().split()
     f.close()
-    #print("Finished reading in text file /usr/share/dict/words...")
+
+    print("Finished reading in text file /usr/share/dict/words...")
+    
+    ## Iterate through the entire list
     for i in range(len(words) - 1):
-
-    ## Testing for one iteration Remove later
-    #for i in range(1):
-
         ## Reset the hash for every new word tested
         m = hashlib.sha256()
 
-        ## This is the rule for 7 character word with one 
-        ## digit appended to the end of the word
+        ## If the word is exactly 7 characters try
+        ## it as a password.
         if((len(words[i])) == 7):
-
-            #print(words[i])
+            
+            ## Set newWord to capitalized version of words at i
             newWord = words[i].capitalize()
+
+            ## Iterate through and append a single digit from
+            ## 0-9 to the end of the word
             for j in range(10):
+
                 ## Reset the hash for every updated
                 ## run involved a new number added to end
                 m = hashlib.sha256()
@@ -149,75 +158,99 @@ def rule1(user, hashedPass):
                 ## Encode the word because Hashlib said so
                 encodedWord = newWord.encode('utf-8')
 
-                ## Testing the word being used with added digit
-                #print(newWord)
-
-                ## Testing portion Remove later
-                #ultraword = "Puzzles42"
-                #print(ultraword)
-
                 ## Update the word being hashed and compared to
                 ## the hashed password in the file
                 hashed = m.update(encodedWord)
-
-                ## Testing purposes for single use for accurate results
-                #hashed = m.update(ultraword.encode('utf-8'))
-                #string = "c1df467d16a2ebea8b48482c10d6c640e163c69f5da3dfba4c442002e5e15fa9"
             
                 ## Digest the hashed word using hexdigest()
                 hashed = m.hexdigest()
-
-                ## Test the hashed word for visual confirmation
-                #print(hashed)
 
                 ## If the hashed password matches the string
                 ## that was recovered from the user entered file
                 ## then the password has been found.
                 if(hashed == hashedPass):
-                    ##Testing statements Remove later##
-                    #print("Password Should be: Atari/'s2\n")
-                    #print("Hashes equal each other")
+                    ##### Write to file??? ####
                     print("Password is ", newWord)
-
 
                     ## Close the thread after outputting the
                     ## results to a file in the correct format
                     exit()
             
-                ## Testing statement
-                #if(ultraword == "Puzzles42"):
-                #    exit()
-            
                 ## Reset the word back to original
                 ## word without digits appended to it
                 newWord = words[i].capitalize()
 
-
-def rule4(user, hashedPass):
+##################################################
+## Rule 4:                                      ##
+## Any number that is made with digits up to    ##
+## 10 digits length                             ##
+##################################################
+def rule4(user, password):
     ## Read in txt file that was created and submitted
     ## Store them into guesses then close the file
     f = open("6digits.txt", "r")
     guesses = f.read().split("\n")
     f.close()
 
-    password = hashedPass
-
-    ## begin the hashlib 256 function
-    #m = hashlib.sha256()
-
-    ## iterate through every line in the array
+    ## Iterate through every line in the array
     for guess in guesses:
+        ## Begin the hashlib 256 function
         m = hashlib.sha256()
-
+        
+        ## Encode the guess into 'utf-8'
+        ## update it into m
+        ## Hash the guess
         encodedGuess = guess.encode('utf-8')
         m.update(encodedGuess)
-
         hashedGuess = m.hexdigest()
 
+        ## If the password hash in the file
+        ## equals the hashed guess found a
+        ## a match
         if(password == hashedGuess):
             print("Cracked the password.")
             print("User: ", user, "\nPassword is: ", guess)
             exit()
 
+
+##################################################
+## Rule 5:                                      ##
+## Any number of characters single word from    ##
+## /usr/share/dict/words                        ##
+##################################################
+def rule5(user, password):
+    print("Reading in text file /usr/share/dict/words...")
+    
+    ## Read in the dictionary of words file
+    ## Store it into words and split on "\n"
+    ## Close the file
+    f = open("/usr/share/dict/words", "r")
+    words = f.read().split("\n")
+    f.close()
+
+    ## Iterate through all the words in the file
+    for word in words:
+        
+        ## Update m every new word that is being tested
+        m = hashlib.sha256()
+        
+        ## Check for match if NO spaces are in the word
+        if(" " not in word):
+            
+            ## Encode the word into 'utf-8'
+            ## Update m with encoded word
+            ## Hash the word
+            encodedWord = word.encode('utf-8')
+            m.update(encodedWord)
+            hashedWord = m.hexdigest()
+
+            ## Compare hashedWord with hash in file
+            ## If they match it is the password
+            if(password == hashedWord):
+                print("Found password.")
+                print("User: ", user, "\nPassword: ", word)
+                exit()
+
+            
 
 main()
