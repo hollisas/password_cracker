@@ -152,7 +152,7 @@ def rule1(user, password, threadNum):
 
 ##################################################
 ## Rule 2:                                      ##
-## 4 digit password with at least one of the   ##
+## 4 digit password with at least one of the    ##
 ## following special characters in the          ##
 ## beginning: '*', '~', '!', '#'                ##
 ##################################################
