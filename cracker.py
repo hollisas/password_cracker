@@ -1,6 +1,8 @@
 import hashlib
 import threading
 
+## Authors: Austin Hollis and Luke Manzo
+
 ##########################################################################
 ##                     Rules for passwords to have                      ##
 ##                                                                      ##
@@ -19,21 +21,19 @@ import threading
 ##  5) Any number of characters single word from /usr/share/dict/words  ##
 ##########################################################################
 
-## Practice and testing how to compare hashes.
-## Update works may be onto something.
+## Main function for the script
 def main():
     ## Grab the Text File With Passwords to Decrypt
     print("Please enter the text file with the hashed passwords: ")
     textFile = input()
-    print("Reading in the file ", textFile)
+    print("Reading in the file ", textFile, "...")
 
     ## Read in the Text File with Passwords into a variable.
     hashedFile = open(textFile, "r")
     ## Split the file into lines denoted by new line characters
     hashedLines = hashedFile.read().split("\n")
 
-
-    print("Finished reading in ", textFile)
+    print("Finished reading in ", textFile, "...")
     ## Close the file
     hashedFile.close()
 
@@ -42,6 +42,7 @@ def main():
     ## after finding the hashed password.
     userArr = []
     hashedPassArr = []
+
     ## Create separate arrays for Users and Hashed Passwords 
     ## to be passed into threading function
     for line in hashedLines:
@@ -50,7 +51,7 @@ def main():
         userArr.append(user)
         hashedPassArr.append(hashedPass)
     
-    #create text file for cracked passwords to output to
+    ## Create text file for cracked passwords to output to
     outfile = open("crackedPasswordsList.txt" , "a" )
     threads = []
     i = 0
@@ -58,28 +59,27 @@ def main():
         t = threading.Thread(target = getCracked, args = (userArr[i], hashedPassArr[i], i, outfile))
         threads.append(t)
         t.start()
-    #getCracked(userArr[0], hashedPassArr[0])
-    #getCracked(userArr[1], hashedPassArr[1])
-    #getCracked(userArr[2], hashedPassArr[2])
-        
 
-
-#function to run all rules (passed into each thread)
+## Function to run all rules (passed into each thread)
 def getCracked(username, hashedPassword, threadNumber, file):
-    
-    ## Open the text file for the wordlist
+    ## Stores thread numbers for each thread to make things
+    ## easier to follow.
     currThreadNum = threadNumber
-    print("beginning cracking in thread " , currThreadNum , " ...\n")
+    print("Begin cracking in thread ", currThreadNum, "...\n")
+    
+    ## Store the user and password in variables
     currUser = username
     currHashedPassword = hashedPassword
+
+    ## List all the users and their hashed passwords.
     print("The user is: " + currUser + " Their Password is: " + currHashedPassword + "\n")
+
+    ## Send each thread through the rules in the following order.
     rule1(currUser, currHashedPassword, currThreadNum, file)
     rule3(currUser, currHashedPassword, currThreadNum, file)
     rule4(currUser, currHashedPassword, currThreadNum, file)
     rule5(currUser, currHashedPassword, currThreadNum, file)
     rule2(currUser, currHashedPassword, currThreadNum, file)
-    ## Remove later used for testing the parsing of the file
-    ## and formatting everything to required formats
     exit()
 
 
@@ -90,7 +90,8 @@ def getCracked(username, hashedPassword, threadNumber, file):
 ## number appended                              ##
 ##################################################
 def rule1(user, password, threadNum, file):
-    print("Reading in text file /usr/share/dict/words...\n")
+    ## Statement to tell where the thread is at.
+    #print("Reading in text file /usr/share/dict/words...\n")
     
     ## Read in the dictionary of words
     ## Read the file and split on space & store into words
@@ -99,7 +100,7 @@ def rule1(user, password, threadNum, file):
     words = f.read().split()
     f.close()
 
-    print("Finished reading in text file /usr/share/dict/words...\n")
+    #print("Finished reading in text file /usr/share/dict/words...\n")
     print("Thread " , threadNum ," trying rule 1...\n")
     ## Iterate through the entire list
     for i in range(len(words) - 1):
@@ -139,7 +140,6 @@ def rule1(user, password, threadNum, file):
                 ## that was recovered from the user entered file
                 ## then the password has been found.
                 if(hashedWord == password):
-                    ##### Write to file??? ####
                     print("Thread", threadNum , "cracked password successfully\n")
                     print("User: ", user, "\nPassword is: ", newWord)
                     file.write("User: " + user + " Password: " + newWord + "\n")
@@ -173,7 +173,7 @@ def rule2(user, password, threadNum, file):
         ## Encode the guess into 'utf-8'
         ## update it into m
         ## Hash the guess
-        encodedGuess = guess.encode('ascii')
+        encodedGuess = guess.encode('utf-8')
         m.update(encodedGuess)
         hashedGuess = m.hexdigest()
 
@@ -194,7 +194,6 @@ def rule2(user, password, threadNum, file):
 ## character 'l' is substituted by the number 1 ## 
 ##################################################
 def rule3(user, password, threadNum, file):
-    
     ## Read in txt file that was created and submitted
     ## Store them into guesses then close the file
     f = open("5charsReplaced.txt", "r")
@@ -236,6 +235,7 @@ def rule4(user, password, threadNum, file):
     guesses = f.read().split("\n")
     f.close()
     print("Thread " , threadNum , " trying rule 4...\n")
+
     ## Iterate through every line in the array
     for guess in guesses:
         ## Begin the hashlib 256 function
@@ -264,7 +264,8 @@ def rule4(user, password, threadNum, file):
 ## /usr/share/dict/words                        ##
 ##################################################
 def rule5(user, password, threadNum, file):
-    print("Reading in text file /usr/share/dict/words...")
+    ## Debugger statements
+    #print("Reading in text file /usr/share/dict/words...")
     
     ## Read in the dictionary of words file
     ## Store it into words and split on "\n"
@@ -272,7 +273,10 @@ def rule5(user, password, threadNum, file):
     f = open("/usr/share/dict/words", "r")
     words = f.read().split("\n")
     f.close()
+
+    ## State what the thread is doing
     print("Thread " , threadNum , " trying rule 5...\n")
+
     ## Iterate through all the words in the file
     for word in words:
         
