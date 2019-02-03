@@ -58,11 +58,6 @@ def main():
         t = threading.Thread(target = getCracked, args = (userArr[i], hashedPassArr[i], i, outfile))
         threads.append(t)
         t.start()
-    #getCracked(userArr[0], hashedPassArr[0])
-    #getCracked(userArr[1], hashedPassArr[1])
-    #getCracked(userArr[2], hashedPassArr[2])
-        
-
 
 #function to run all rules (passed into each thread)
 def getCracked(username, hashedPassword, threadNumber, file):
